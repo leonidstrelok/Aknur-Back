@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  aknur-back:
+    image: aknur-full
+    container_name: aknur-full
+    restart: always
+
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:latest
+    restart: always
+
+  caddy:
+    container_name: caddy
+    image: caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - nginx_network
+    volumes:
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile
+
+
+  #proxy:
+  #  container_name: nginx-proxy
+  #  image: nginx
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  volumes:
+  #    - ./proxy/conf.d:/etc/nginx/conf.d:ro
+  #    - ./proxy/certificates:/etc/nginx/ssl:ro
+  #  networks:
+  #    - nginx_network
+  #  restart: always
+
+
+volumes:
+  postgres-db-aknur-data:
+
+networks:
+  nginx_network:
+    external: true
